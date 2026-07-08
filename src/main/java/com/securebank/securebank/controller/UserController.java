@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.securebank.securebank.entity.User;
 import com.securebank.securebank.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
@@ -24,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User registerUser(@RequestBody User user) {
+    public User registerUser(@Valid @RequestBody User user) {
         return userService.registerUser(user);
     }
 

@@ -3,6 +3,7 @@ package com.securebank.securebank.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -30,15 +31,29 @@ public class SecurityConfig {
 
                         // Public APIs
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
 
-                        // Swagger (for future use)
+                        // Swagger
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        // All other APIs require JWT
+                        // ADMIN APIs
+                        .requestMatchers(HttpMethod.GET, "/users")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.DELETE, "/users/**")
+                        .hasRole("ADMIN")
+
+                        // CUSTOMER & ADMIN APIs
+                        .requestMatchers("/accounts/**")
+                        .hasAnyRole("CUSTOMER", "ADMIN")
+
+                        .requestMatchers("/transactions/**")
+                        .hasAnyRole("CUSTOMER", "ADMIN")
+
+                        // Everything else
                         .anyRequest().authenticated()
                 )
 
