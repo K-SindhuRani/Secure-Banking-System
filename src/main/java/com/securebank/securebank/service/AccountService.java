@@ -33,9 +33,9 @@ public class AccountService {
 
         Optional<User> optionalUser = userRepository.findById(userId);
 
-        if (optionalUser.isEmpty()) {
-            return null;
-        }
+        if(optionalUser.isEmpty()){
+           throw new RuntimeException("User Not Found");
+    }
 
         account.setUser(optionalUser.get());
         account.setCreatedDate(LocalDate.now());
@@ -58,7 +58,8 @@ public class AccountService {
 
     // Get Account By Account Number
     public Account getAccountByNumber(String accountNumber) {
-        return accountRepository.findByAccountNumber(accountNumber).orElse(null);
+        return accountRepository.findByAccountNumber(accountNumber)
+        .orElseThrow(() -> new RuntimeException("Account Not Found"));
     }
 
     // Balance Enquiry
@@ -83,7 +84,7 @@ public class AccountService {
                 .orElse(null);
 
         if (account == null) {
-            return null;
+             throw new RuntimeException("Account Not Found");
         }
 
         account.setBalance(account.getBalance() + amount);
@@ -109,8 +110,8 @@ public class AccountService {
                 .orElse(null);
 
         if (account == null) {
-            return null;
-        }
+            throw new RuntimeException("Account Not Found");
+     }
 
         if (account.getBalance() < amount) {
             throw new RuntimeException("Insufficient Balance");

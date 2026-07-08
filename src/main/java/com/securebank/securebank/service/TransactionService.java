@@ -39,8 +39,19 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    // Get Account Transactions
+    // Get Transactions By Account Number
     public List<Transaction> getTransactions(String accountNumber) {
-        return transactionRepository.findByFromAccountOrToAccount(accountNumber, accountNumber);
+        return transactionRepository.findByFromAccountOrToAccount(
+                accountNumber,
+                accountNumber);
+    }
+
+    // Get Mini Statement (Latest 5 Transactions)
+    public List<Transaction> getMiniStatement(String accountNumber) {
+
+        return transactionRepository
+                .findTop5ByFromAccountOrToAccountOrderByTransactionDateDesc(
+                        accountNumber,
+                        accountNumber);
     }
 }

@@ -8,6 +8,13 @@ import com.securebank.securebank.entity.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findByFromAccountOrToAccount(String fromAccount, String toAccount);
+    // Get all transactions of an account
+    List<Transaction> findByFromAccountOrToAccount(
+            String fromAccount,
+            String toAccount);
 
+    // Get latest 5 transactions
+    List<Transaction> findTop5ByFromAccountOrToAccountOrderByTransactionDateDesc(
+            String fromAccount,
+            String toAccount);
 }
