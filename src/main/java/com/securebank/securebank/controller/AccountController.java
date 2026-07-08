@@ -47,8 +47,11 @@ public class AccountController {
     // Balance Enquiry
     @GetMapping("/balance/{accountNumber}")
     public BalanceResponse getBalance(@PathVariable String accountNumber) {
-        return accountService.getBalance(accountNumber);
-    }
+
+    Double balance = accountService.getBalance(accountNumber);
+
+    return new BalanceResponse(accountNumber, balance);
+}
 
     // Deposit
     @PutMapping("/deposit/{accountNumber}/{amount}")
